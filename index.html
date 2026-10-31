@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pharmamitra</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0284c7"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#fbf9f5;--card:#fff;--tx:#1e293b;--mu:#475569;--bd:#cbd5e1;--bl:#0284c7;--or:#ea580c;--z:#f8fafc;--lab:#e0f2fe;--ac:#0284c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,sans-serif;padding:12px}
+.container{max-width:1350px;margin:0 auto}.hidden{display:none!important}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px}
+.auth{max-width:400px;margin:60px auto;text-align:center}.auth label{text-align:left}
+input,select{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:9px;width:100%;min-width:0}
+label,.lbl{font-size:12px;font-weight:700;color:var(--ac);display:block;margin-bottom:3px}
+button,.lk{font:inherit;padding:10px 15px;border-radius:8px;border:0;color:#fff;cursor:pointer;font-weight:700;background:var(--bl);display:inline-block}
+.dg{background:#dc2626;padding:5px 11px;font-size:14px}.wa{background:#16a34a}.or{background:var(--or)}.lk{background:var(--mu);margin:0;font-size:14px;padding:8px 12px}
+.err{color:#dc2626;font-size:14px;margin-top:8px}
+.lay{display:flex;gap:16px;align-items:flex-start}.side{width:250px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.side h6{margin:6px 8px 0;font-size:12px;color:var(--mu);text-transform:uppercase}
+.tb{text-align:left;background:transparent;color:var(--tx);padding:11px 12px}.tb:hover{background:var(--z)}.tb.on{background:var(--ac);color:#fff}
+.main{flex:1;min-width:0}.tc{display:none}.tc.on{display:block}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sync{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--bd);padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:13px;font-weight:600}
+.head{background:var(--ac);color:#fff;border-radius:10px;padding:14px;text-align:center;margin-bottom:12px}.head h1{margin:0;font-size:24px}.head p{margin:3px 0;font-size:14px}
+.ttl{display:inline-block;margin-top:6px;padding:2px 16px;border:1px solid #fff;border-radius:20px;font-size:13px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:12px 0;padding:14px;border-radius:10px;background:var(--lab)}
+.g2,.g3{display:grid;gap:12px;margin-bottom:12px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}
+.tm{display:grid;grid-template-columns:1fr auto 1fr;gap:4px;align-items:center}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ac);border-radius:8px;overflow:hidden;height:42px}.seg button{border-radius:0;background:var(--card);color:var(--mu)}
+#mc[aria-pressed=true]{background:#0284c7;color:#fff}#mr[aria-pressed=true]{background:#ea580c;color:#fff}
+.ibox,.pv{display:none}
+.tbl{overflow-x:auto;border-radius:10px;border:2px solid var(--ac);margin-top:8px}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{background:var(--ac);color:#fff;font-size:13px;text-align:left;padding:9px 8px;border:1px solid var(--bd)}
+td{padding:5px 8px;border:1px solid var(--bd);font-size:15px}tbody tr:nth-child(even) td{background:var(--z)}
+td input,td select{border:none;padding:5px;background:transparent}
+td.n{text-align:center;font-weight:700;width:35px;color:var(--ac)}td.amt,td.rt{text-align:right}td.amt{font-weight:700;color:var(--ac)}td.rt input{text-align:right}
+tr.h1 td{background:#fef2f2!important}tr.h1 .nm{color:#dc2626;font-weight:700}
+tr.nx td{background:#fef08a!important}tr.ex td{background:#fecaca!important}
+td small{display:block;color:var(--mu);font-size:12px}
+input.cb{border:2px solid #0284c7;color:#0369a1;font-weight:700}input.ob{border:2px solid #ea580c;color:#c2410c;font-weight:700}
+th.cb{background:#0369a1}th.ob{background:#c2410c}td.cb{color:#0369a1;font-weight:700}td.ob{color:#c2410c;font-weight:700}
+td.lc{padding:0 6px;vertical-align:top}.ln{height:30px;line-height:30px;white-space:nowrap;border-bottom:1px dotted var(--bd);padding:0 4px}.ln.n{background:#fef08a}.ln.e{background:#fecaca}.ln small{display:inline}
+.x{background:none;color:#dc2626;font-size:22px;padding:0 6px}
+.tot{display:flex;justify-content:flex-end;margin-top:12px}.tot>div{min-width:320px}
+.r{display:flex;justify-content:space-between;align-items:center;padding:5px 0;gap:12px}.r input{width:100px;text-align:right;font-weight:700}
+.r.g{font-size:24px;font-weight:800;margin-top:6px;padding:10px 14px;border-radius:10px;background:var(--ac);color:#fff}
+.foot{margin-top:14px;text-align:center;color:var(--ac);font-weight:700;border-top:1px dashed var(--bd);padding-top:10px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+details{margin-top:14px;border-top:1px solid var(--bd);padding-top:8px}summary{cursor:pointer;font-weight:700;color:var(--ac)}
+.hl{margin-top:8px;display:grid;gap:6px;max-height:280px;overflow-y:auto}
+.hi{display:flex;justify-content:space-between;text-align:left;background:transparent;color:var(--tx);border:1px solid var(--bd);border-left:4px solid var(--bl);padding:8px 12px;font-weight:400}.hi small{display:block;color:var(--mu)}
+.bd{background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:4px;font-size:12px;font-weight:700}
+.ub{padding:3px 12px;border-radius:20px;font-weight:600;font-size:14px;background:#fee2e2;color:#991b1b}
+.muted{color:var(--mu);font-size:13px;margin:4px 0 14px}
+body{padding:0;font-size:13px}.container{max-width:none}
+.card{padding:6px 10px;margin:0 0 6px;border-radius:0}
+.hdr{padding:4px 10px;margin:0 0 2px}.hdr h2{font-size:15px!important}.hdr .muted{margin:0}
+.sync{padding:3px 10px;margin:0 0 4px;border-radius:0;font-size:12px}.sync button,.sync .lk{padding:3px 9px;font-size:12px}
+.lay{gap:6px;align-items:stretch}
+.side{width:76px;padding:4px;gap:2px;border-radius:0;position:sticky;top:0;height:calc(100vh - 74px);overflow-y:auto}
+.tb{display:flex;flex-direction:column;align-items:center;width:100%;font-size:11px;padding:6px 2px;text-align:center;line-height:1.2;border-radius:6px}.tb i{font-style:normal;font-size:22px;line-height:1.1}
+.main{min-width:0;max-height:calc(100vh - 74px);overflow-y:auto}
+h3{margin:0 0 2px;font-size:15px}h4{margin:8px 0 3px;font-size:14px}.muted{font-size:12px;margin:2px 0 6px}
+th{padding:4px 6px;font-size:12px}td{padding:2px 6px;font-size:13px}
+input,select{padding:5px 7px}button,.lk{padding:6px 12px}
+.tbl{border-radius:0;border-width:1px;margin-top:4px}table{min-width:0}
+.head{padding:6px;margin-bottom:6px}.head h1{font-size:18px}.head p{margin:1px 0;font-size:12px}
+.grid{padding:8px;gap:6px;margin:6px 0}.g2,.g3{gap:8px;margin-bottom:6px}
+.fx{table-layout:fixed;width:100%}.fx td,.fx th{overflow:hidden}.fx input{width:100%;min-width:0;padding:3px 4px}.fx input[type=checkbox]{width:auto}
+.fx input[type=number]{-moz-appearance:textfield}.fx input::-webkit-inner-spin-button{display:none}
+.pct{display:flex;align-items:center;gap:2px;font-weight:700}.pct.cb{color:#0369a1}.pct.ob{color:#c2410c}
+.ln{overflow:hidden;text-overflow:ellipsis}
+@media(max-width:700px){.side{width:100%;height:auto;flex-direction:row;overflow-x:auto;position:static}.tb{width:70px;flex:none}.main{max-height:none}}
+@media print{.main{max-height:none!important;overflow:visible!important}}
+@media(max-width:700px){.grid,.g3{grid-template-columns:1fr 1fr}.lay{flex-direction:column}.side{width:100%}}
+@media print{body{background:#fff;padding:0}.no,.x,details,.side,.hdr,.sync{display:none!important}.card{border:none;padding:0}
+tr.blank{display:none}.ibox{display:grid;grid-template-columns:repeat(6,1fr);border:2px solid var(--ac);margin:8px 0;font-size:13px}
+.ic{padding:5px 9px;border:1px solid #bae6fd;background:#f0f9ff;-webkit-print-color-adjust:exact;print-color-adjust:exact}.ic b{display:block;font-size:11px;color:var(--ac);text-transform:uppercase}
+td input,td select{display:none!important}.pv{display:inline;font-weight:600}.tbl{overflow:visible}table{min-width:0}.r input{border:none;padding:0}
+.head,th,.r.g{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ---- v2 fixes: one scrollbar, no overlapping buttons, clear pointer ---- */
+.main{max-height:none;overflow:visible}
+@media(min-width:701px){.side{top:4px;height:calc(100vh - 8px)}}
+.fx{min-width:1080px}.fx .x{padding:0 3px;line-height:1}.fx .dg{padding:0 6px}
+.fx input[type=checkbox]{width:18px;height:18px;cursor:pointer}
+button,.lk,.tb,summary,.hi,select,input[type=checkbox],input[type=file],label.lk{cursor:pointer}
+input[type=text],input:not([type]),input[type=number],input[type=date],input[type=tel],input[type=password]{cursor:text}
+button:disabled{cursor:not-allowed;opacity:.5}
+#gs{font-size:12px}
+.lb{display:block;color:var(--mu);font-weight:700;font-size:12px;margin-top:3px;text-transform:none}
+.steps{display:flex;gap:6px;justify-content:center;margin:6px 0 10px}.steps span{font-size:12px;padding:3px 10px;border-radius:20px;background:#e2e8f0;color:var(--mu);font-weight:700}.steps span.on{background:var(--ac);color:#fff}
+.side{overflow-y:auto;overflow-x:hidden}.tb{flex:none;position:relative}.tb i{display:block;position:relative;z-index:1;pointer-events:none}
+.tb:hover:not(.on){background:#e0f2fe;color:#0369a1;filter:none}.tb.on:hover{filter:none;background:var(--ac);color:#fff}
+</style></head><body>
+<div class="container">
+
+<div id="setup" class="auth card hidden"><h2>Welcome to Pharmamitra</h2>
+<div class="steps"><span id="sd1" class="on">1 Login</span><span id="sd2">2 Pharmacy</span><span id="sd3">3 Folder</span></div>
+<div id="sp1"><p class="muted">Step 1 · Create the master (admin) login.</p>
+<div><label>Admin Username</label><input id="su"></div><br><div><label>Admin Password</label><input type="password" id="sp"></div><br>
+<button onclick="setup()" style="width:100%">Create &amp; Continue</button><div id="se" class="err hidden">Enter username and password.</div><br>
+<label class="lk">📂 Restore from backup file<input type="file" accept=".json" hidden onchange="restore(this)"></label><br><br><button type="button" class="wa" onclick="gsRestoreNew()">☁ Restore from Google Drive</button></div>
+<div id="sp2" class="hidden"><p class="muted">Step 2 · Pharmacy details (optional – you can skip and add them later in Settings).</p>
+<div><label>Pharmacy Name</label><input id="su-n"></div><br><div><label>Licence / DL No</label><input id="su-dl"></div><br><div><label>Address &amp; Phone</label><input id="su-a"></div><br>
+<button onclick="setup2(false)" style="width:100%">Save &amp; Continue</button><br><br><button class="lk" onclick="setup2(true)">Skip for now</button></div>
+<div id="sp3" class="hidden"><p class="muted">Step 3 · Choose where Pharmamitra keeps your files (for example Documents). It creates one folder <b>Pharmamitra</b> with the sub folders <b>Data</b>, <b>Bills</b>, <b>Backups</b> and <b>Excel</b>.</p>
+<button onclick="setupFolder()" style="width:100%">📁 Choose location &amp; create folder</button><br><br><button class="lk" onclick="finishSetup()">Skip (files will download instead)</button></div></div>
+
+<div id="login" class="auth card hidden"><h2>Pharmamitra Login</h2>
+<div><label>Username</label><input id="lu"></div><br><div><label>Password</label><input type="password" id="lp" onkeydown="if(event.key=='Enter')login()"></div><br>
+<button onclick="login()" style="width:100%">Login</button><div id="le" class="err hidden">Invalid username or password.</div><br>
+<label class="lk">📂 New device? Restore backup file<input type="file" accept=".json" hidden onchange="restore(this)"></label><br><br><button type="button" class="wa" onclick="gsRestoreNew()">☁ New device? Restore from Google Drive</button></div>
+
+<div id="dash" class="hidden">
+<div class="card hdr"><div><h2 id="ht" style="margin:0;font-size:22px"></h2><span id="hs" class="muted"></span></div>
+<div><span id="role" class="ub"></span> <button class="dg" onclick="logout()">Logout</button></div></div>
+<div class="sync"><span id="bk"></span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span id="gs"></span><button id="gsb" class="adm wa" onclick="gsClick()">☁ Connect Google</button><button id="ib" class="hidden or" onclick="doInstall()">📲 Install app</button>
+<button onclick="downloadBk()">⬇ Backup file</button>
+<button class="adm or" onclick="pickFolder()">📁 Data folder</button><label class="lk">Restore<input type="file" accept=".json" hidden onchange="restore(this)"></label></span></div>
+<div class="lay">
+<div class="side">
+<button class="tb on" onclick="sw('billing',this)"><i>💳</i>Billing</button>
+<button class="tb" onclick="sw('retb',this)"><i>🔄</i>Returns</button>
+<button class="tb" onclick="sw('inv',this)"><i>📦</i>Inventory</button>
+<button class="tb" onclick="sw('wo',this)"><i>🔙</i>Write-off</button>
+<button class="tb" onclick="sw('h1',this)"><i>🚨</i>H1 Register</button>
+<button class="tb" onclick="sw('graph',this)"><i>📈</i>Graphs</button>
+<button class="tb adm" onclick="sw('docs',this)"><i>👨‍⚕️</i>Doctors</button>
+<button class="tb adm" onclick="sw('users',this)"><i>👥</i>Users</button>
+<button class="tb adm" onclick="sw('set',this)"><i>⚙️</i>Settings</button>
+<button class="tb" onclick="xl()" style="color:#15803d"><i>📊</i>Excel</button></div>
+<div class="main">
+
+<div id="t-billing" class="tc card on">
+<div class="head"><h1 id="sn"></h1><p id="l1"></p><p id="l2"></p><div class="ttl">CASH BILL</div></div>
+<div class="grid no">
+<div style="grid-column:span 1"><label>Bill No</label><input id="billno" inputmode="numeric"><small id="lastbill-disp" class="lb"></small></div>
+<div style="grid-column:span 2"><label>Date</label><input id="date" type="date"></div>
+<div style="grid-column:span 3"><span class="lbl">Time (24 hr)</span><div class="tm"><select id="th"></select><span>:</span><select id="tmn"></select></div></div>
+<div style="grid-column:span 2"><label>Patient Name</label><input id="cname" autocomplete="off"></div>
+<div><label>Sex</label><select id="csex"><option>Male</option><option>Female</option><option>Other</option></select></div>
+<div><label>Age</label><input id="cage" type="number" inputmode="numeric"></div>
+<div style="grid-column:span 2"><label>Phone</label><input id="cph" type="tel" autocomplete="off"></div>
+<div style="grid-column:span 3"><label>Referred By (Doctor)</label><input id="cref" list="doctorList" autocomplete="off"><datalist id="doctorList"></datalist></div>
+<div style="grid-column:span 3"><span class="lbl">Bill Nature (Price Type)</span><div class="seg"><button type="button" id="mc" aria-pressed="true">Customer</button><button type="button" id="mr" aria-pressed="false">RMP</button></div></div>
+</div>
+<div class="ibox"><div class="ic" style="grid-column:span 1"><b>Bill No</b><span id="i-no"></span></div><div class="ic" style="grid-column:span 2"><b>Date</b><span id="i-dt"></span></div><div class="ic" style="grid-column:span 3"><b>Time</b><span id="i-tm"></span></div>
+<div class="ic" style="grid-column:span 2"><b>Patient</b><span id="i-nm"></span></div><div class="ic"><b>Sex</b><span id="i-sex"></span></div><div class="ic"><b>Age</b><span id="i-age"></span></div><div class="ic" style="grid-column:span 2"><b>Phone</b><span id="i-ph"></span></div>
+<div class="ic" style="grid-column:span 6"><b>Referred By</b><span id="i-ref"></span></div></div>
+<div class="tbl"><table><thead><tr><th>#</th><th style="min-width:170px">Medicine</th><th style="width:85px">Type</th><th style="width:70px;text-align:right">Qty</th><th style="width:85px;text-align:right">MRP ₹</th><th style="width:90px;text-align:right">Price ₹</th><th style="width:95px;text-align:right">Amount ₹</th><th class="no" style="width:35px"></th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="bar no"><button id="add" type="button">+ Add item</button></div>
+<div class="tot"><div>
+<div class="r"><span>Total MRP</span><b id="tmrp">0.00</b></div>
+<div class="r"><span>Sub Total</span><b id="sub">0.00</b></div>
+<div class="r"><span>Extra Round-off Disc ₹</span><input id="disc" type="number" min="0" value="0"></div>
+<div class="r" style="color:var(--ac);font-weight:700"><span>Total You Saved</span><span id="sav">0.00</span></div>
+<div class="r g"><span>Total Payable ₹</span><span id="grand">0.00</span></div></div></div>
+<div class="foot">Thank you! Get well soon 🙏</div>
+<div class="bar no"><button id="pdf" style="flex:1">💾 Save Bill &amp; Print / PDF</button><button type="button" onclick="pickFolder()">📁 Data folder</button><button class="wa" id="wa">WhatsApp</button><button id="share">Share…</button><button class="or" id="new">New bill</button></div>
+<p class="muted no">Save &amp; Print records the sale, deducts stock, saves a copy of the bill in your chosen folder and opens Print. File name: Bill_No_Name_Date_Time.</p><p class="muted no" id="bmsg"></p>
+<details class="no"><summary>Saved bills <span id="hcount"></span></summary><input id="hq" placeholder="Search name, phone, bill no, date" style="margin-top:8px"><div class="hl" id="hl"></div></details>
+</div>
+
+<div id="t-retb" class="tc card"><h3>🔄 Bill Returns &amp; Refunds</h3><p class="muted">Search the bill, search a drug inside it, set the return quantity. Stock is restored and the refund is calculated.</p>
+<div class="g3"><div><label>Bill No / Patient (search)</label><input id="rb-no" list="billList" oninput="rbLoad()" autocomplete="off"><datalist id="billList"></datalist></div><div><label>Search drug in this bill</label><input id="rb-q" oninput="rbFilter()"></div><div><label>Reason</label><select id="rb-why"><option>Customer returned</option><option>Wrong item</option><option>Damaged</option></select></div></div>
+<div class="tbl"><table><thead><tr><th>Drug</th><th>Type</th><th>Sold</th><th>Returned</th><th style="width:100px">Return Qty</th><th>Price ₹</th><th>Refund ₹</th></tr></thead><tbody id="rb-rows"></tbody></table></div>
+<div class="tot"><div><div class="r g"><span>Total Refund ₹</span><span id="rb-tot">0.00</span></div></div></div>
+<div class="bar"><button onclick="retBill()">Process Return</button></div>
+<h4>Returns Log</h4><div class="tbl"><table><thead><tr><th>Time</th><th>Bill</th><th>Drugs returned</th><th>Refund ₹</th></tr></thead><tbody id="retb-body"></tbody></table></div></div>
+
+<div id="t-inv" class="tc card"><h3>📦 Stock In &amp; Inventory</h3><p class="muted"><b>No. of sheets</b> = sheets (strips) ordered · <b>Units per sheet</b> = tablets in one sheet · price and % are linked (change one, the other updates) · near expiry (6 months) = yellow, expired = red.</p>
+<div class="g3"><div><label>Distributor</label><input id="p-dist" list="distList" oninput="distGst()" autocomplete="off"><datalist id="distList"></datalist><datalist id="allMeds"></datalist></div><div><label>Distributor GST No</label><input id="p-gst"></div><div><label>Invoice No</label><input id="p-inv"></div></div>
+<div class="g3"><div><label>Invoice Date</label><input id="p-date" type="date"></div><div></div><div></div></div>
+<div class="tbl"><table class="fx"><thead><tr><th style="width:15%">Drug (search)</th><th style="width:9%">Batch</th><th style="width:11%">Expiry</th><th style="width:7%">No. of sheets</th><th style="width:7%">Units / sheet</th><th style="width:7%">MRP ₹</th><th style="width:7%">Cost ₹</th><th class="cb" style="width:7%">Cust ₹</th><th class="ob" style="width:7%">RMP ₹</th><th class="cb" style="width:7%">Cust %</th><th class="ob" style="width:7%">RMP %</th><th style="width:5%">H1</th><th style="width:5%"></th></tr></thead><tbody id="p-rows"></tbody></table></div>
+<div class="bar"><button onclick="pRow()">+ Add drug</button><button class="wa" onclick="savePurchase()">Save Purchase to Stock</button></div>
+<h4>Inventory — latest invoice first</h4><div class="tbl"><table class="fx"><thead><tr><th style="width:14%">Distributor / Invoice</th><th style="width:15%">Drugs</th><th style="width:8%">Batch</th><th style="width:12%">Expiry</th><th style="width:10%">Stock units (sheets×units)</th><th style="width:6%">MRP ₹</th><th style="width:6%">Cost ₹</th><th class="cb" style="width:6%">Cust ₹</th><th class="ob" style="width:6%">RMP ₹</th><th class="cb" style="width:6%">Cust %</th><th class="ob" style="width:6%">RMP %</th><th style="width:5%"></th></tr></thead><tbody id="inv-body"></tbody></table></div></div>
+
+<div id="t-wo" class="tc card"><h3>🔙 Return to Distributor / Write-off</h3><p class="muted">Pick the drug, then the exact batch (distributor and invoice are shown).</p>
+<div class="g3"><div><label>Drug (search)</label><input id="w-name" list="allMeds" oninput="woBatches()" autocomplete="off"></div><div><label>Batch</label><select id="w-batch"></select></div><div><label>Units</label><input id="w-q" type="number" min="1" value="1"></div></div>
+<div class="g3"><div><label>Reason</label><select id="w-why"><option>Expired</option><option>Damaged</option><option>Return to distributor</option></select></div><div><label>Credit Note No (optional)</label><input id="w-cn"></div><div></div></div>
+<button class="or" onclick="writeOff()">Save</button><h4>Log</h4><div class="tbl"><table style="min-width:800px"><thead><tr><th>Time</th><th>Drug</th><th>Batch</th><th>Distributor</th><th>Invoice</th><th>Units</th><th>Reason</th><th>Credit Note</th></tr></thead><tbody id="wo-body"></tbody></table></div></div>
+
+<div id="t-graph" class="tc card"><h3>📈 Sales Graphs</h3><div class="g3"><select id="g-p" onchange="graph()"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="365">Last 12 months (monthly)</option></select><div></div><div></div></div>
+<div id="g-kpi" class="g3"></div><h4>Revenue</h4><div id="g-bar"></div>
+<div class="g2"><div><h4>Top medicines (revenue)</h4><div id="g-top"></div></div><div><h4>Customer vs RMP</h4><div id="g-mode"></div></div></div></div>
+
+<div id="t-h1" class="tc card"><h3 style="color:#dc2626">🚨 Schedule H1 Register</h3><p class="muted">Every H1 sale is logged automatically (patient and doctor are required).</p>
+<div class="tbl"><table><thead><tr><th>Date &amp; Time</th><th>Bill</th><th>Patient</th><th>Doctor</th><th>Medicine</th><th>Batch</th><th>Units</th></tr></thead><tbody id="h1-body"></tbody></table></div></div>
+
+<div id="t-docs" class="tc card"><h3>Doctor Directory</h3>
+<div class="g3"><div><label>Name</label><input id="d-n"></div><div><label>Designation</label><input id="d-d"></div><div><label>Phone</label><input id="d-p" type="tel"></div></div>
+<button onclick="addDoc()">Add Doctor</button><div class="tbl"><table><thead><tr><th>Name</th><th>Designation</th><th>Phone</th><th></th></tr></thead><tbody id="doc-body"></tbody></table></div></div>
+
+<div id="t-users" class="tc card"><h3>Staff Accounts</h3>
+<div class="g3"><input id="w-u" placeholder="Worker username"><input id="w-p" type="password" placeholder="Worker password"><button onclick="addWorker()">Add Worker</button></div>
+<div class="tbl"><table><thead><tr><th>Username</th><th>Role</th><th></th></tr></thead><tbody id="usr-body"></tbody></table></div></div>
+
+<div id="t-set" class="tc card"><h3>Pharmacy Details &amp; Settings</h3>
+<div class="g2"><div><label>Pharmacy Name</label><input id="st-n" placeholder="optional"></div><div><label>Licence line</label><input id="st-dl"></div></div>
+<div style="margin-bottom:12px"><label>Address &amp; Contact</label><input id="st-a"></div><button onclick="saveSet()">Save Settings</button>
+<h4>📁 Data folder</h4><p class="muted">Pharmamitra keeps everything in one folder: <b>Data</b> (live copy of your data), <b>Bills</b> (a copy of every bill), <b>Backups</b> (one backup file per day) and <b>Excel</b> (exports). Works in Chrome / Edge on a computer.</p>
+<div class="bar" style="margin:0 0 6px"><button onclick="pickFolder()">📁 Create / change folder</button><span id="fs" class="muted" style="align-self:center"></span></div>
+<h4>☁ Google Drive sync</h4><p class="muted">Paste the Google <b>Client ID</b> once, then press <b>Connect Google</b> at the top. After that every change is copied to your own Google Drive (a private hidden app folder). On a new device press <b>Restore from Google Drive</b> on the login screen.</p>
+<div class="g2"><div><label>Google Client ID</label><input id="st-cid" placeholder="1234567890-abc...apps.googleusercontent.com" autocomplete="off"></div><div style="align-self:end"><button onclick="gsSaveCid()">Save ID</button> <button class="dg" onclick="gsOff()">Disconnect Google</button></div></div></div>
+
+</div></div></div></div>
+
+<datalist id="meds"></datalist>
+<script>
+document.addEventListener('wheel',e=>{const a=document.activeElement;if(a&&a.type=='number'&&e.target===a)a.blur()},{passive:true});
+const $=i=>document.getElementById(i),K='PM1',SK='PM_SESSION';
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>(n<10?'0':'')+n,f=n=>(Math.round(n*100)/100).toFixed(2);
+const dmy=s=>{const p=(s||'').split('-');return p.length==3?p[2]+'-'+p[1]+'-'+p[0]:s};
+const ds=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>ds(new Date()),lim6=()=>{const d=new Date();d.setMonth(d.getMonth()+6);return ds(d)};
+const xs=i=>i.exp<today()?'e':i.exp<=lim6()?'n':'';
+const byExp=(a,b)=>a.exp<b.exp?-1:1;
+let DB,me=null,mode='c',loadedNo=null,rows;
+const CAT=[["Dolo 650 Tab","Micro Labs",15,30,27,0],["Pan-D Capsule","Alkem",10,150,135,0],["Alprazolam 0.5mg","Pfizer",10,50,45,1],["Augmentin 625","GSK",10,210,190,0],["ORS Sachet","FDC",1,22,20,0],["Cetirizine Tab","Dr. Reddy's",10,25,22,0],["Cough Syrup 100ml","Cipla",1,110,100,0],["Tramadol 50mg","Abbott",10,85,75,1],["Paracetamol 500mg","Micro Labs",15,35,30,0],["Ibuprofen 400mg","Cipla",15,35,30,0]];
+
+function load(){let d=null;try{d=JSON.parse(localStorage.getItem(K))}catch(e){}
+ if(!d){d={users:[],settings:{name:'',dl:'',addr:''},inv:[],sales:[],rets:[],wo:[],h1:[],docs:[],bk:{last:null,n:0},last:100};
+  if(!d.inv.length){const e=new Date();e.setFullYear(e.getFullYear()+2);CAT.forEach((c,k)=>d.inv.push({id:Date.now()+k,name:c[0],mfg:c[1],batch:'SEED-'+(k+1),exp:ds(e),qty:100*c[2],pack:c[2],mrp:c[3],c:c[4],r:Math.round(c[4]*.82*100)/100,h1:!!c[5]}));
+   d.docs=[{n:'Dr. Suryanarayana Raju',d:'MBBS, MD',ph:'9848012345'},{n:'Dr. Venkata Ramana',d:'MS Ortho',ph:'9440123456'}]}}
+
+ d.purch=d.purch||[];d.dists=d.dists||{};
+ if(!d.seed2){d.seed2=1;const e=new Date(),n=new Date();e.setFullYear(e.getFullYear()+2);n.setMonth(n.getMonth()+2);
+  const dolo=d.inv.find(i=>i.name=='Dolo 650 Tab'&&!i.dist);if(dolo){dolo.dist='Medico Wholesale';dolo.gst='37CCCCC2222C1Z5';dolo.invno='INV-1001';dolo.cost=10}
+  d.inv.push({id:Date.now()+501,name:'Dolo 650 Tab',batch:'DL-B2',dist:'Sri Sai Distributors',gst:'37AAAAA0000A1Z5',invno:'INV-2002',exp:ds(e),qty:150,pack:15,cost:10,mrp:30,c:27,r:22,h1:false},
+   {id:Date.now()+502,name:'Azithromycin 500 (Near Expiry Demo)',batch:'AZ-NE1',dist:'Lakshmi Pharma Agencies',gst:'37BBBBB1111B1Z5',invno:'INV-1750',exp:ds(n),qty:60,pack:6,cost:55,mrp:120,c:110,r:95,h1:false});
+  d.dists={'Medico Wholesale':'37CCCCC2222C1Z5','Sri Sai Distributors':'37AAAAA0000A1Z5','Lakshmi Pharma Agencies':'37BBBBB1111B1Z5'}}
+ DB=d}
+function save(){localStorage.setItem(K,JSON.stringify(DB));DB.bk.n++;badge();clearTimeout(tmr);tmr=setTimeout(()=>writeFolder(false),1500);gsQ()}
+let tmr;
+async function H(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('ph:'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return'x'+btoa(unescape(encodeURIComponent(s)))}}
+
+/* ---------- auth ---------- */
+function init(){const th=$('th'),tmn=$('tmn');th.innerHTML=tmn.innerHTML='';
+ for(let h=0;h<24;h++)th.add(new Option(pad(h)));for(let m=0;m<60;m++)tmn.add(new Option(pad(m)));
+ rows=$('rows');load();shop();badge();
+ ['dash','setup','login'].forEach(i=>$(i).classList.add('hidden'));
+ if(!DB.users.length){$('setup').classList.remove('hidden');stp(1);return}
+ const u=DB.users.find(x=>x.u==localStorage.getItem(SK));if(u){me=u;dash()}else $('login').classList.remove('hidden')}
+function stp(n){[1,2,3].forEach(i=>{$('sp'+i).classList.toggle('hidden',i!=n);$('sd'+i).classList.toggle('on',i==n)})}
+async function setup(){const u=$('su').value.trim(),p=$('sp').value.trim();if(!u||!p){$('se').classList.remove('hidden');return}
+ DB.users.push({u,h:await H(p),role:'admin'});save();stp(2)}
+function setup2(skip){if(!skip){DB.settings={name:$('su-n').value.trim(),dl:$('su-dl').value.trim(),addr:$('su-a').value.trim()};save();shop()}stp(3)}
+async function setupFolder(){const r=await makeRoot();if(r)finishSetup()}
+function finishSetup(){me=DB.users[0];localStorage.setItem(SK,me.u);dash()}
+async function login(){const u=$('lu').value.trim(),h=await H($('lp').value.trim()),x=DB.users.find(y=>y.u==u&&y.h==h);
+ if(!x){$('le').classList.remove('hidden');return}me=x;localStorage.setItem(SK,u);$('lp').value='';$('le').classList.add('hidden');dash();writeFolder(true)}
+function logout(){if(DB.bk.n>0&&confirm('There are changes not backed up. Download a backup file now?'))downloadBk();me=null;localStorage.removeItem(SK);init()}
+function shop(){const s=DB.settings,n=s.name||'Pharmamitra';$('ht').textContent=n;$('hs').textContent=[s.dl,s.addr].filter(Boolean).join(' | ');$('sn').textContent=n;$('l1').textContent=s.dl||'';$('l2').textContent=s.addr||'';document.title='Pharmamitra';
+ $('st-n').value=s.name;$('st-dl').value=s.dl;$('st-a').value=s.addr;$('st-cid').value=localStorage.getItem('PH_CID')||''}
+function dash(){$('login').classList.add('hidden');$('setup').classList.add('hidden');$('dash').classList.remove('hidden');
+ const ad=me.role=='admin';$('role').textContent=(ad?'Admin: ':'Worker: ')+me.u;
+ document.querySelectorAll('.adm').forEach(e=>e.style.display=ad?'':'none');
+ sw('billing',document.querySelector('.tb'));refreshAll();fresh();updateLastBillDisp();gsUI();fsUI()}
+function sw(t,b){window.scrollTo(0,0);document.querySelectorAll('.tc').forEach(e=>e.classList.remove('on'));document.querySelectorAll('.tb').forEach(e=>e.classList.remove('on'));$('t-'+t).classList.add('on');if(t=='graph')graph();if(b)b.classList.add('on')}
+function refreshAll(){invUI();h1UI();retUI();docUI();usrUI();meds();renderH();updateLastBillDisp()}
+
+/* ---------- backup / restore ---------- */
+function snap(){return JSON.stringify({app:'pharmacy',v:12,at:new Date().toISOString(),data:DB})}
+function bkName(){const d=new Date();return'Pharmamitra_Backup_'+today()+'_'+pad(d.getHours())+pad(d.getMinutes())+'.json'}
+function badge(){if(!DB)return;const n=DB.bk.n;$('bk').textContent='💾 Last backup: '+(DB.bk.last||'never')+(n?' · '+n+' change(s) not backed up':' · all saved');$('bk').style.color=n?'#ea580c':'#16a34a'}
+function markBk(){DB.bk.last=new Date().toLocaleString();DB.bk.n=0;localStorage.setItem(K,JSON.stringify(DB));badge()}
+function downloadBk(){saveOut('Backups',bkName(),snap(),'application/json').then(m=>{markBk();alert(m)})}
+const idb=()=>new Promise((ok,no)=>{const r=indexedDB.open('ph',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=no});
+async function idbGet(k){const d=await idb();return new Promise(ok=>{const q=d.transaction('k').objectStore('k').get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>ok()})}
+async function idbSet(k,v){const d=await idb();d.transaction('k','readwrite').objectStore('k').put(v,k)}
+const SUBS=['Data','Bills','Backups','Excel'];
+async function rootDir(ask){try{const h=await idbGet('root');if(!h)return null;const o={mode:'readwrite'};if(await h.queryPermission(o)=='granted')return h;if(ask&&await h.requestPermission(o)=='granted')return h}catch(e){}return null}
+async function makeRoot(){if(!window.showDirectoryPicker){alert('Folder creation works in Chrome or Edge on a computer. On this device files will download to your Downloads folder.');return null}
+ try{const p=await window.showDirectoryPicker({mode:'readwrite',id:'pharmamitra',startIn:'documents'});const r=p.name=='Pharmamitra'?p:await p.getDirectoryHandle('Pharmamitra',{create:true});
+  for(const x of SUBS)await r.getDirectoryHandle(x,{create:true});await idbSet('root',r);fsUI();await writeFolder(true);return r}catch(e){return null}}
+async function fput(sub,name,text,ask){const r=await rootDir(ask);if(!r)return false;try{const d=await r.getDirectoryHandle(sub,{create:true}),w=await(await d.getFileHandle(name,{create:true})).createWritable();await w.write(text);await w.close();return true}catch(e){return false}}
+async function saveOut(sub,name,text,type){if(await fput(sub,name,text,true))return'Saved in Pharmamitra/'+sub+': '+name;
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();return'Downloaded: '+name}
+async function fsUI(){const r=await rootDir(false),e=$('fs');if(e)e.textContent=r?'✔ Folder: '+r.name+' (Data · Bills · Backups · Excel)':'No folder yet – files will download instead'}
+async function pickFolder(){const r=await makeRoot();if(r)alert('Folder ready: '+r.name+'. Data, bills, backups and Excel files are saved there automatically.')}
+async function writeFolder(ask){const t=snap();if(!await fput('Data','pharmamitra_data.json',t,ask))return false;await fput('Backups','Pharmamitra_Backup_'+today()+'.json',t,false);markBk();return true}
+function applyBackup(txt,quiet){const o=JSON.parse(txt),d=o.data||o;if(!d.users||!d.inv||!d.sales)throw 0;
+ if(!quiet&&DB.users.length&&!confirm('This REPLACES all data on this device with the backup. Continue?'))return false;
+ d.bk={last:new Date().toLocaleString(),n:0};localStorage.setItem(K,JSON.stringify(d));localStorage.removeItem(SK);me=null;return true}
+function restore(inp){const fl=inp.files[0];if(!fl)return;const r=new FileReader();
+ r.onload=()=>{let ok=false;try{ok=applyBackup(r.result)}catch(e){alert('This is not a valid backup file.');return}if(ok){alert('Backup restored. Please log in.');init()}};
+ r.readAsText(fl);inp.value=''}
+
+/* ---------- billing ---------- */
+function meds(){const dl=$('meds');dl.innerHTML='';const seen={};DB.inv.filter(i=>i.qty>0&&i.exp>=today()).forEach(i=>{const k=i.name.toLowerCase();seen[k]=(seen[k]||0)+i.qty;});
+ Object.keys(seen).forEach(k=>{const m=DB.inv.find(i=>i.name.toLowerCase()==k),o=new Option(m.name);o.label='Stock: '+seen[k]+' units · ₹'+m.mrp;dl.appendChild(o)})}
+function pick(n){n=(n||'').trim().toLowerCase();return DB.inv.filter(i=>i.name.toLowerCase()==n&&i.qty>0&&i.exp>=today()).sort(byExp)[0]||null}
+function fill(tr){const m=pick(tr.querySelector('.nm').value);if(!m){tr._m=null;tr._u=null;tr._h1=false;return false}
+ const k=tr.querySelector('.ut').value=='Unit'?1/m.pack:1;tr._m=m;tr._u={mrp:m.mrp*k,c:m.c*k,r:m.r*k};tr._h1=m.h1;return true}
+function addRow(d){const tr=document.createElement('tr');tr._m=null;tr._u=null;tr._h1=false;
+ tr.innerHTML='<td class="n"></td><td><input class="nm" list="meds" placeholder="Medicine name" autocomplete="off"><span class="pv nm-pv"></span></td><td><select class="ut"><option>Sheet</option><option>Unit</option></select><span class="pv ut-pv"></span></td><td class="rt"><input class="q" type="number" min="1" step="1" value="1"><span class="pv q-pv"></span></td><td class="rt mrp">0.00</td><td class="rt p">0.00</td><td class="amt">0.00</td><td class="no"><button class="x" type="button" aria-label="Remove">×</button></td>';
+ rows.appendChild(tr);
+ if(d){tr.querySelector('.nm').value=d.n;tr.querySelector('.ut').value=d.ut;tr.querySelector('.q').value=d.q;tr._u={mrp:d.mrp,c:d.c,r:d.r};tr._h1=d.h1}
+ const nm=tr.querySelector('.nm'),q=tr.querySelector('.q');
+ tr.querySelector('.x').onclick=()=>{tr.remove();if(!rows.children.length)addRow();calc()};
+ nm.addEventListener('input',()=>{fill(tr);calc()});
+ nm.addEventListener('change',()=>{if(fill(tr)){calc();q.focus();q.select()}});
+ tr.querySelector('.ut').addEventListener('change',()=>{fill(tr);calc()});
+ q.addEventListener('input',calc);
+ q.addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();(tr.nextElementSibling||addRow()).querySelector('.nm').focus()}});
+ calc();return tr}
+function calc(){let sub=0,tm=0,i=0;
+ [...rows.children].forEach(tr=>{i++;tr.querySelector('.n').textContent=i;
+  const u=tr._u,q=parseFloat(tr.querySelector('.q').value)||0,nm=tr.querySelector('.nm').value.trim();
+  const p=u?Math.round((mode=='c'?u.c:u.r)*100)/100:0,mrp=u?Math.round(u.mrp*100)/100:0,a=p*q;tr._p=p;sub+=a;tm+=mrp*q;
+  tr.querySelector('.mrp').textContent=f(mrp);tr.querySelector('.p').textContent=f(p);tr.querySelector('.amt').textContent=f(a);
+  tr.querySelector('.nm-pv').textContent=nm;tr.querySelector('.ut-pv').textContent=tr.querySelector('.ut').value;tr.querySelector('.q-pv').textContent=q;
+  tr.classList.toggle('h1',!!tr._h1);tr.classList.toggle('blank',!nm&&!a)});
+ const d=Math.min(parseFloat($('disc').value)||0,sub),g=Math.max(0,sub-d);
+ $('tmrp').textContent=f(tm);$('sub').textContent=f(sub);$('sav').textContent=f(Math.max(0,tm-g));$('grand').textContent=f(g);info();return{sub,g}}
+function info(){const v=i=>$(i).value;$('i-no').textContent=v('billno')||'-';$('i-dt').textContent=dmy(v('date'))||'-';$('i-tm').textContent=v('th')+':'+v('tmn');
+ $('i-nm').textContent=v('cname').trim()||'-';$('i-sex').textContent=v('csex');$('i-age').textContent=v('cage')?v('cage')+'y':'-';$('i-ph').textContent=v('cph').trim()||'-';$('i-ref').textContent=v('cref').trim()||'Self'}
+function setMode(m){mode=m;$('mc').setAttribute('aria-pressed',m=='c');$('mr').setAttribute('aria-pressed',m=='r');
+ document.documentElement.style.setProperty('--ac',m=='c'?'#0284c7':'#ea580c');calc()}
+function nextNo(){
+  let m = 100;
+  if(DB && DB.sales && DB.sales.length > 0) {
+    DB.sales.forEach(s => {
+      const n = parseInt(s.no, 10);
+      if(!isNaN(n) && n > m) m = n;
+    });
+  }
+  if(DB && DB.last && DB.last > m) {
+    m = DB.last;
+  }
+  return m + 1;
+}
+
+function updateLastBillDisp(){
+  let last = '-';
+  if(DB && DB.sales && DB.sales.length > 0){
+    let sorted = [...DB.sales].sort((a,b)=>parseInt(b.no,10)-parseInt(a.no,10));
+    last = sorted[0].no;
+  }
+  const el = document.getElementById('lastbill-disp');
+  if(el) el.textContent = 'Last Bill No: ' + last;
+}
+
+function fresh(){rows.innerHTML='';['cname','cph','cage'].forEach(i=>$(i).value='');$('cref').value='Self';$('disc').value='0';$('csex').value='Male';
+ loadedNo=null;document.getElementById('billno').value=nextNo();updateLastBillDisp();const d=new Date();$('date').value=ds(d);$('th').value=pad(d.getHours());$('tmn').value=pad(d.getMinutes());setMode('c');addRow()}
+
+function saveBill(){
+ const no=$('billno').value.trim();if(!no){alert('Enter a bill number.');return false}
+ if(DB.sales.some(s=>s.no==no)){if(loadedNo==no)return true;alert('Bill No '+no+' is already used. Click New bill or change the number.');return false}
+ const name=$('cname').value.trim(),ref=$('cref').value.trim(),ph=$('cph').value.trim();
+ if(ph&&!/^\d{10}$/.test(ph)){alert('Phone number must be 10 digits.');return false}
+ const t=calc(),tmp={},items=[];DB.inv.forEach(i=>tmp[i.id]=i.qty);
+ for(const tr of rows.children){const nm=tr.querySelector('.nm').value.trim();if(!nm)continue;
+  const q=parseFloat(tr.querySelector('.q').value)||0,ut=tr.querySelector('.ut').value;
+  if(!tr._m){alert('"'+nm+'" is not available in stock (or all batches are expired).');return false}
+  if(q<=0||q%1){alert('Quantity must be a whole number above 0 for '+nm);return false}
+  const m=tr._m;let left=q*(ut=='Sheet'?m.pack:1);const b=[];
+  DB.inv.filter(i=>i.name.toLowerCase()==m.name.toLowerCase()&&i.exp>=today()&&tmp[i.id]>0).sort(byExp).forEach(i=>{if(left<=0)return;const x=Math.min(left,tmp[i.id]);tmp[i.id]-=x;left-=x;b.push([i.id,x])});
+  if(left>0){alert('Not enough stock for '+nm+'.');return false}
+  items.push({n:m.name,ut,q,pk:m.pack,mrp:Math.round(tr._u.mrp*100)/100,c:tr._u.c,r:tr._u.r,p:tr._p,h1:!!tr._h1,b})}
+ if(!items.length){alert('Add at least one medicine.');return false}
+ if(items.some(x=>x.h1)&&(!name||!ref||ref=='Self')){alert('Schedule H1 medicine: patient name and doctor are required.');return false}
+ const time=$('th').value+':'+$('tmn').value,date=$('date').value;
+ items.forEach(x=>x.b.forEach(([id,u])=>{const inv=DB.inv.find(i=>i.id==id);inv.qty-=u;
+  if(x.h1)DB.h1.unshift({dt:dmy(date)+' '+time,no,pt:name,doc:ref,drug:x.n,batch:inv.batch,u})}));
+ DB.sales.unshift({no,name,sex:$('csex').value,age:$('cage').value,ph,ref:ref||'Self',date,time,mode,disc:parseFloat($('disc').value)||0,sub:t.sub,total:t.g,rows:items});
+ const n=parseInt(no,10);if(!isNaN(n))DB.last=Math.max(DB.last||0,n);
+ loadedNo=no;save();refreshAll();return true}
+function loadBill(b){rows.innerHTML='';$('billno').value=b.no;$('cname').value=b.name;$('csex').value=b.sex||'Male';$('cage').value=b.age||'';$('cph').value=b.ph;$('cref').value=b.ref||'Self';
+ $('date').value=b.date;[$('th').value,$('tmn').value]=b.time.split(':');$('disc').value=b.disc;b.rows.forEach(addRow);loadedNo=b.no;setMode(b.mode);window.scrollTo(0,0)}
+function renderH(){const q=$('hq').value.trim().toLowerCase();$('hcount').textContent='('+DB.sales.length+')';const box=$('hl');box.innerHTML='';
+ DB.sales.filter(b=>!q||(b.name+' '+b.ph+' '+b.no+' '+b.date+' '+b.time).toLowerCase().includes(q)).slice(0,50).forEach(b=>{
+  const el=document.createElement('button');el.type='button';el.className='hi';
+  el.innerHTML='<div>#'+esc(b.no)+' '+esc(b.name||'Customer')+' <small>'+dmy(b.date)+' '+b.time+(b.ph?' · '+esc(b.ph):'')+(b.mode=='r'?' · RMP':'')+'</small></div><strong>₹'+f(b.total)+'</strong>';
+  el.onclick=()=>loadBill(b);box.appendChild(el)})}
+function billText(){const s=DB.settings,L=[s.name||'Pharmamitra',s.addr||'','','Bill No: '+$('billno').value,'Date: '+dmy($('date').value)+' '+$('th').value+':'+$('tmn').value];
+ if($('cname').value.trim())L.push('Patient: '+$('cname').value.trim());L.push('');let i=0;
+ [...rows.children].forEach(tr=>{const n=tr.querySelector('.nm').value.trim();if(!n)return;i++;L.push(i+'. '+n+' - '+tr.querySelector('.q').value+' '+tr.querySelector('.ut').value+' x ₹'+f(tr._p)+' = ₹'+tr.querySelector('.amt').textContent)});
+ L.push('','TOTAL PAYABLE: ₹'+$('grand').textContent,'','Thank you! Get well soon 🙏');return L.join('\n')}
+function send(wa){if(!saveBill())return;const t=billText(),ph=$('cph').value.trim();
+ if(wa&&/^\d{10}$/.test(ph)){window.open('https://wa.me/91'+ph+'?text='+encodeURIComponent(t),'_blank');return}
+ if(navigator.share)navigator.share({title:'Bill',text:t}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>alert('Bill text copied.'))}
+$('add').onclick=()=>addRow().querySelector('.nm').focus();
+$('mc').onclick=()=>setMode('c');$('mr').onclick=()=>setMode('r');$('disc').oninput=calc;$('hq').oninput=renderH;
+['billno','date','cname','csex','cage','cph','cref','th','tmn'].forEach(i=>{$(i).addEventListener('input',info);$(i).addEventListener('change',info)});
+window.addEventListener('beforeprint',calc);
+const san=s=>String(s).trim().replace(/[^\w\u0C00-\u0C7F]+/g,'_').replace(/^_|_$/g,'');
+function billFile(b){return['Bill',b.no,san(b.name||'Customer'),dmy(b.date),b.time.replace(':','-')].join('_')}
+function billHTML(b){const s=DB.settings,rr=b.rows.map((x,k)=>'<tr><td>'+(k+1)+'</td><td>'+esc(x.n)+'</td><td>'+x.ut+'</td><td align=right>'+x.q+'</td><td align=right>'+f(x.mrp)+'</td><td align=right>'+f(x.p)+'</td><td align=right>'+f(x.p*x.q)+'</td></tr>').join('');
+ return'<!DOCTYPE html><meta charset="utf-8"><title>'+esc(billFile(b))+'</title><body style="font:15px system-ui;max-width:760px;margin:20px auto"><h2 style="text-align:center;margin:0">'+esc(s.name||'Pharmamitra')+'</h2><p style="text-align:center;margin:2px">'+esc(s.dl)+'<br>'+esc(s.addr)+'</p><hr><p><b>Bill No:</b> '+esc(b.no)+' &nbsp; <b>Date:</b> '+dmy(b.date)+' '+b.time+' &nbsp; <b>Type:</b> '+(b.mode=='r'?'RMP':'Customer')+'<br><b>Patient:</b> '+esc(b.name||'-')+' ('+esc(b.sex||'')+', '+esc(b.age||'-')+'y) &nbsp; <b>Phone:</b> '+esc(b.ph||'-')+'<br><b>Referred by:</b> '+esc(b.ref)+'</p><table border=1 cellpadding=5 style="border-collapse:collapse;width:100%"><tr><th>#</th><th>Medicine</th><th>Type</th><th>Qty</th><th>MRP</th><th>Price</th><th>Amount</th></tr>'+rr+'</table><p align=right>Discount: '+f(b.disc||0)+'<br><b style="font-size:20px">Total Payable: ₹'+f(b.total)+'</b></p><p align=center>Thank you! Get well soon 🙏</p></body>'}
+async function saveBillFile(b){return saveOut('Bills',billFile(b)+'.html',billHTML(b),'text/html')}
+let pdfTitle='';
+$('pdf').onclick=async()=>{if(!saveBill())return;info();const b=DB.sales.find(s=>s.no==$('billno').value.trim());let msg='';
+ if(b){try{msg=await saveBillFile(b)}catch(e){msg='Could not save the bill file.'}}$('bmsg').textContent=msg+(msg?' · In the print window choose "Save as PDF" – the file name is already filled in.':'');
+ pdfTitle=b?billFile(b):'Bill';document.title=pdfTitle;setTimeout(()=>window.print(),150)};
+window.addEventListener('beforeprint',()=>{if(pdfTitle)document.title=pdfTitle});
+window.addEventListener('afterprint',()=>{if(pdfTitle){document.title='Pharmamitra';pdfTitle=''}});
+$('wa').onclick=()=>send(true);$('share').onclick=()=>send(false);
+$('new').onclick=()=>{if(confirm('Start a new bill? Current items will be cleared.'))fresh()};
+
+/* ---------- inventory / purchases ---------- */
+const mg=(p,c)=>c>0?Math.round((p-c)/c*100)+'%':'-';
+function distGst(){const g=DB.dists[$('p-dist').value.trim()];if(g)$('p-gst').value=g}
+function pc(tr,src){const q=c=>tr.querySelector(c),cost=parseFloat(q('.pc').value)||0,fx=x=>String(Math.round(x*10)/10);
+ q('.tu').textContent='= '+((parseInt(q('.ps').value)||0)*(parseInt(q('.pk').value)||0))+' units';
+ if(cost<=0)return;
+ [['cp','cq'],['rp','rq']].forEach(([p,m])=>{const P=q('.'+p),M=q('.'+m),pv=P.value!=='',mv=M.value!=='';
+  if(src==m){if(mv)P.value=f(cost*(1+parseFloat(M.value)/100))}
+  else if(src==p){if(pv)M.value=fx((parseFloat(P.value)-cost)/cost*100)}
+  else if(src=='pc'){if(pv)M.value=fx((parseFloat(P.value)-cost)/cost*100);else if(mv)P.value=f(cost*(1+parseFloat(M.value)/100))}})}
+function pRow(){const tr=document.createElement('tr');
+ tr.innerHTML='<td><input class="pn" list="allMeds" placeholder="Search drug"></td><td><input class="pb"></td><td><input class="pe" type="date"></td><td><input class="ps" type="number" min="1" value="10"><small class="tu"></small></td><td><input class="pk" type="number" min="1" value="10"></td><td><input class="pm" type="number" step="0.01"></td><td><input class="pc" type="number" step="0.01"></td><td><input class="cp cb" type="number" step="0.01"></td><td><input class="rp ob" type="number" step="0.01"></td><td><span class="pct cb"><input class="cq cb" type="number" step="0.1">%</span></td><td><span class="pct ob"><input class="rq ob" type="number" step="0.1">%</span></td><td><input class="ph" type="checkbox"></td><td><button class="x" type="button">×</button></td>';
+ $('p-rows').appendChild(tr);const q=c=>tr.querySelector(c);
+ q('.x').onclick=()=>{tr.remove();if(!$('p-rows').children.length)pRow()};
+ q('.pn').addEventListener('change',()=>{const m=[...DB.inv].reverse().find(i=>i.name.toLowerCase()==q('.pn').value.trim().toLowerCase());
+  if(m){q('.pk').value=m.pack;q('.pm').value=m.mrp;q('.ph').checked=m.h1;if(m.cost)q('.pc').value=m.cost;pc(tr,'pc')}});
+ ['pc','cp','cq','rp','rq','ps','pk'].forEach(c=>q('.'+c).addEventListener('input',()=>pc(tr,c)));pc(tr,'ps')}
+function savePurchase(){const dist=$('p-dist').value.trim(),inv=$('p-inv').value.trim(),gst=$('p-gst').value.trim(),date=$('p-date').value||today();
+ if(!dist||!inv)return alert('Enter distributor name and invoice number.');
+ const it=[];let bad='';
+ [...$('p-rows').children].forEach(tr=>{const q=c=>tr.querySelector(c),n=q('.pn').value.trim();if(!n)return;
+  const o={n,batch:q('.pb').value.trim(),exp:q('.pe').value,sh:parseInt(q('.ps').value),pack:parseInt(q('.pk').value),cost:parseFloat(q('.pc').value),mrp:parseFloat(q('.pm').value),c:parseFloat(q('.cp').value),r:parseFloat(q('.rp').value),h1:q('.ph').checked};
+  if(!o.batch||!o.exp||!(o.sh>0)||!(o.pack>0)||isNaN(o.cost)||isNaN(o.mrp)||isNaN(o.c)||isNaN(o.r))bad=n+': fill batch, expiry, no. of sheets, units per sheet, MRP, cost, customer price and RMP price.';
+  else if(o.c>o.mrp||o.r>o.mrp)bad=n+': a price is higher than MRP.';
+  it.push(o)});
+ if(bad)return alert(bad);if(!it.length)return alert('Add at least one drug.');
+ if(DB.purch.some(p=>p.dist==dist&&p.inv==inv)&&!confirm('This invoice is already entered. Add again?'))return;
+ if(it.some(o=>o.exp<today())&&!confirm('Some expiry dates are in the past. Continue?'))return;
+ it.forEach(o=>{const ex=DB.inv.find(i=>i.name.toLowerCase()==o.n.toLowerCase()&&i.batch.toLowerCase()==o.batch.toLowerCase()&&i.dist==dist);
+  if(ex){ex.qty+=o.sh*o.pack;Object.assign(ex,{mrp:o.mrp,c:o.c,r:o.r,cost:o.cost,exp:o.exp,invno:inv,pack:o.pack,h1:o.h1})}
+  else DB.inv.push({id:Date.now()+Math.floor(Math.random()*1e3),name:o.n,batch:o.batch,dist,gst,invno:inv,exp:o.exp,qty:o.sh*o.pack,pack:o.pack,cost:o.cost,mrp:o.mrp,c:o.c,r:o.r,h1:o.h1})});
+ DB.purch.unshift({id:Date.now()+5000,dist,gst,inv,date,items:it});if(gst)DB.dists[dist]=gst;
+ $('p-rows').innerHTML='';['p-dist','p-gst','p-inv'].forEach(i=>$(i).value='');pRow();save();refreshAll();alert('Purchase saved. These drugs are now in stock and available in Billing.')}
+function delInv(id){if(confirm('Delete this batch?')){DB.inv=DB.inv.filter(i=>i.id!=id);save();refreshAll()}}
+function groups(){const m={};DB.inv.forEach(i=>{const k=(i.dist||'')+'|'+(i.invno||''),g=m[k]=m[k]||{dist:i.dist||'',gst:i.gst||'',inv:i.invno||'',items:[],t:0};g.items.push(i);g.t=Math.max(g.t,i.id)});
+ return Object.values(m).map(g=>{const p=DB.purch.find(x=>x.dist==g.dist&&x.inv==g.inv);g.date=p?p.date:'';if(p)g.t=Math.max(g.t,p.id);g.items.sort((a,b)=>a.name.localeCompare(b.name)||byExp(a,b));return g}).sort((a,b)=>b.t-a.t)}
+function invUI(){if(!$('p-rows').children.length){pRow();$('p-date').value=today()}
+ $('distList').innerHTML=Object.keys(DB.dists).map(d=>'<option value="'+esc(d)+'">').join('');
+ $('allMeds').innerHTML=[...new Set(DB.inv.map(i=>i.name))].map(n=>'<option value="'+esc(n)+'">').join('');
+ const gs=groups(),ad=me&&me.role=='admin';
+ $('inv-body').innerHTML=gs.length?gs.map(g=>{const L=(fn,c)=>'<td class="lc'+(c?' '+c:'')+'">'+g.items.map(i=>{const s=xs(i);return'<div class="ln '+(s||'')+'">'+fn(i,s)+'</div>'}).join('')+'</td>';
+  return'<tr><td style="vertical-align:top;overflow:hidden"><b>'+esc(g.dist||'No distributor')+'</b><small>Invoice: '+esc(g.inv||'-')+'</small><small>GST: '+esc(g.gst||'-')+'</small><small>'+(g.date?dmy(g.date):'')+'</small></td>'
+  +L(i=>'<b>'+esc(i.name)+'</b>'+(i.h1?' <span class="bd">H1</span>':''))+L(i=>esc(i.batch))
+  +L((i,s)=>i.exp+(s=='n'?' <span class="bd">NEAR</span>':s=='e'?' <span class="bd">EXPIRED</span>':''))
+  +L(i=>i.qty+' <small>('+Math.floor(i.qty/i.pack)+'×'+i.pack+')</small>')+L(i=>f(i.mrp))+L(i=>i.cost?f(i.cost):'-')
+  +L(i=>f(i.c),'cb')+L(i=>f(i.r),'ob')+L(i=>mg(i.c,i.cost),'cb')+L(i=>mg(i.r,i.cost),'ob')
+  +L(i=>ad?'<button class="dg" style="padding:0 7px" onclick="delInv('+i.id+')">✕</button>':'')+'</tr>'}).join(''):'<tr><td colspan="12">No stock yet.</td></tr>'}
+function woBatches(){const n=$('w-name').value.trim().toLowerCase();
+ $('w-batch').innerHTML=DB.inv.filter(i=>i.name.toLowerCase()==n).sort(byExp).map(i=>'<option value="'+i.id+'">'+esc((i.dist||'-')+' · '+(i.invno||'-')+' · '+i.batch+' · exp '+i.exp+' · stock '+i.qty)+'</option>').join('')||'<option value="">No batch found</option>'}
+function writeOff(){const it=DB.inv.find(i=>i.id==$('w-batch').value),q=parseInt($('w-q').value)||0;
+ if(!it)return alert('Select a drug and batch.');if(q<=0||q>it.qty)return alert('Only '+it.qty+' units in that batch.');
+ it.qty-=q;DB.wo.unshift({t:new Date().toLocaleString(),med:it.name,batch:it.batch,dist:it.dist||'',invno:it.invno||'',q,why:$('w-why').value,cn:$('w-cn').value.trim()});
+ $('w-name').value=$('w-cn').value='';woBatches();save();refreshAll()}
+
+/* ---------- bill returns ---------- */
+const ri=x=>x.items||[{n:x.med,ut:'',q:x.q,amt:x.amt}];
+function rbDone(no,r){let d=0;DB.rets.forEach(x=>{if(x.no==no)ri(x).forEach(i=>{if(i.n.toLowerCase()==r.n.toLowerCase()&&(!i.ut||i.ut==r.ut))d+=i.q})});return d}
+let rbS=null;
+function rbLoad(){const no=$('rb-no').value.trim().split(' ')[0];rbS=DB.sales.find(x=>x.no==no)||null;const t=$('rb-rows');
+ if(!rbS){t.innerHTML='<tr><td colspan="7">Type or select a saved bill number.</td></tr>';rbCalc();return}
+ const k=rbS.sub?rbS.total/rbS.sub:1;
+ t.innerHTML=rbS.rows.map((r,i)=>{const d=rbDone(rbS.no,r),m=r.q-d;return'<tr data-i="'+i+'" data-n="'+esc(r.n.toLowerCase())+'"><td><b>'+esc(r.n)+'</b></td><td>'+r.ut+'</td><td class="rt">'+r.q+'</td><td class="rt">'+d+'</td><td class="rt"><input class="rq" type="number" min="0" max="'+m+'" value="0" '+(m>0?'':'disabled')+' oninput="rbCalc()"></td><td class="rt">'+f(r.p*k)+'</td><td class="amt">0.00</td></tr>'}).join('');rbCalc()}
+function rbCalc(){let t=0;[...$('rb-rows').children].forEach(tr=>{if(!rbS||!tr.dataset.i)return;const r=rbS.rows[tr.dataset.i],k=rbS.sub?rbS.total/rbS.sub:1,a=r.p*k*(parseFloat(tr.querySelector('.rq').value)||0);tr.querySelector('.amt').textContent=f(a);t+=a});$('rb-tot').textContent=f(t)}
+function rbFilter(){const q=$('rb-q').value.trim().toLowerCase();[...$('rb-rows').children].forEach(tr=>tr.style.display=!q||(tr.dataset.n||'').includes(q)?'':'none')}
+function retBill(){if(!rbS)return alert('Select a saved bill first.');const k=rbS.sub?rbS.total/rbS.sub:1,list=[];let bad=0;
+ [...$('rb-rows').children].forEach(tr=>{const q=parseFloat(tr.querySelector('.rq').value)||0;if(q<=0)return;const r=rbS.rows[tr.dataset.i];if(q>r.q-rbDone(rbS.no,r)||q%1)bad=1;list.push({r,q})});
+ if(bad)return alert('A return quantity is more than what is left on the bill (whole numbers only).');if(!list.length)return alert('Enter a return quantity for at least one drug.');
+ let tot=0;const items=list.map(({r,q})=>{const amt=r.p*k*q,mu=r.ut=='Sheet'?r.pk:1;tot+=amt;let skip=rbDone(rbS.no,r)*mu,back=q*mu;
+  for(const [id,u] of r.b){if(back<=0)break;let cap=u;if(skip>0){const z=Math.min(skip,cap);cap-=z;skip-=z}const x=Math.min(back,cap),b=DB.inv.find(i=>i.id==id);if(x>0&&b){b.qty+=x;back-=x}}
+  if(back>0){const b=r.b[0]&&DB.inv.find(i=>i.id==r.b[0][0]);if(b)b.qty+=back}
+  return{n:r.n,ut:r.ut,q,amt}});
+ DB.rets.unshift({t:new Date().toLocaleString(),no:rbS.no,why:$('rb-why').value,items,total:tot});
+ $('rb-no').value='';rbLoad();save();refreshAll();alert('Return done. Refund to customer: ₹'+f(tot))}
+function retUI(){$('billList').innerHTML=DB.sales.slice(0,300).map(b=>'<option value="'+esc(b.no+' — '+(b.name||'Customer'))+'">').join('');
+ $('retb-body').innerHTML=DB.rets.length?DB.rets.map(x=>'<tr><td>'+esc(x.t)+'</td><td>#'+esc(x.no)+'</td><td>'+ri(x).map(i=>esc(i.n)+' × '+i.q).join(', ')+'</td><td>'+f(x.total!=null?x.total:ri(x).reduce((a,i)=>a+i.amt,0))+'</td></tr>').join(''):'<tr><td colspan="4">No returns yet.</td></tr>';
+ $('wo-body').innerHTML=DB.wo.length?DB.wo.map(r=>'<tr><td>'+esc(r.t)+'</td><td>'+esc(r.med)+'</td><td>'+esc(r.batch)+'</td><td>'+esc(r.dist||'-')+'</td><td>'+esc(r.invno||'-')+'</td><td>'+r.q+'</td><td>'+esc(r.why||'')+'</td><td>'+esc(r.cn||'')+'</td></tr>').join(''):'<tr><td colspan="8">No entries yet.</td></tr>'}
+function h1UI(){$('h1-body').innerHTML=DB.h1.length?DB.h1.map(l=>'<tr><td>'+esc(l.dt)+'</td><td>#'+esc(l.no)+'</td><td>'+esc(l.pt)+'</td><td>'+esc(l.doc)+'</td><td style="color:#dc2626;font-weight:700">'+esc(l.drug)+'</td><td>'+esc(l.batch)+'</td><td>'+l.u+'</td></tr>').join(''):'<tr><td colspan="7">No H1 sales yet.</td></tr>'}
+
+/* ---------- admin ---------- */
+function addDoc(){const n=$('d-n').value.trim();if(!n)return alert('Enter doctor name.');DB.docs.push({n,d:$('d-d').value.trim(),ph:$('d-p').value.trim()});['d-n','d-d','d-p'].forEach(i=>$(i).value='');save();docUI()}
+function delDoc(i){DB.docs.splice(i,1);save();docUI()}
+function docUI(){$('doctorList').innerHTML='<option value="Self">'+DB.docs.map(d=>'<option value="'+esc(d.n+(d.d?' ('+d.d+')':''))+'">').join('');
+ $('doc-body').innerHTML=DB.docs.length?DB.docs.map((d,i)=>'<tr><td><b>'+esc(d.n)+'</b></td><td>'+esc(d.d)+'</td><td>'+esc(d.ph)+'</td><td><button class="dg" onclick="delDoc('+i+')">Remove</button></td></tr>').join(''):'<tr><td colspan="4">No doctors.</td></tr>'}
+async function addWorker(){const u=$('w-u').value.trim(),p=$('w-p').value.trim();if(!u||!p)return alert('Enter username and password.');
+ if(DB.users.some(x=>x.u==u))return alert('Username already exists.');DB.users.push({u,h:await H(p),role:'worker'});$('w-u').value=$('w-p').value='';save();usrUI()}
+function delUser(u){if(confirm('Delete '+u+'?')){DB.users=DB.users.filter(x=>!(x.u==u&&x.role=='worker'));save();usrUI()}}
+function usrUI(){$('usr-body').innerHTML=DB.users.map(w=>'<tr><td><b>'+esc(w.u)+'</b></td><td>'+w.role+'</td><td>'+(w.role=='worker'?'<button class="dg" data-u="'+esc(w.u)+'" onclick="delUser(this.dataset.u)">Remove</button>':'')+'</td></tr>').join('')}
+function saveSet(){DB.settings={name:$('st-n').value.trim(),dl:$('st-dl').value.trim(),addr:$('st-a').value.trim()};save();shop();alert('Saved.')}
+
+/* ---------- Excel: one row per bill / return / invoice ---------- */
+function xl(){const cell=(v,s)=>typeof v=='number'?'<Cell ss:StyleID="'+(s||'w')+'"><Data ss:Type="Number">'+v+'</Data></Cell>':'<Cell ss:StyleID="'+(s||'w')+'"><Data ss:Type="String">'+esc(v).replace(/\n/g,'&#10;')+'</Data></Cell>';
+ const sh=(n,h,rs,w)=>'<Worksheet ss:Name="'+n+'"><Table>'+(w||[]).map(x=>'<Column ss:Width="'+x+'"/>').join('')+'<Row>'+h.map(x=>cell(x,'h')).join('')+'</Row>'+rs.map(r=>'<Row>'+r.v.map((v,i)=>cell(v,(r.p&&r.p[i])||r.s||'w')).join('')+'</Row>').join('')+'</Table></Worksheet>';
+ const R=(v,s,p)=>({v,s,p}),S=[],r2=n=>Math.round(n*100)/100,L=(a,g)=>a.map(g).join('\n'),ri2=x=>ri(x);
+ S.push(sh('Sales',['Bill No','Date','Time','Patient / RMP','Sex','Age','Phone','Doctor','Nature','Drugs','Qty','MRP','Price','Amount','Discount','Bill Total'],
+  DB.sales.map(b=>R([b.no,dmy(b.date),b.time,b.name||'',b.sex||'',b.age||'',b.ph||'',b.ref||'Self',b.mode=='r'?'RMP':'Customer',L(b.rows,(x,k)=>(k+1)+'. '+x.n),L(b.rows,x=>x.q+' '+x.ut),L(b.rows,x=>f(x.mrp)),L(b.rows,x=>f(x.p)),L(b.rows,x=>f(x.p*x.q)),b.disc||0,r2(b.total)])),
+  [55,75,45,130,50,35,90,150,65,240,70,65,65,75,60,80]));
+ S.push(sh('Returns',['Time','Bill No','Reason','Drugs','Qty','Refund','Total Refund'],
+  DB.rets.map(x=>R([x.t,x.no,x.why||'',L(ri2(x),(i,k)=>(k+1)+'. '+i.n),L(ri2(x),i=>i.q+' '+(i.ut||'')),L(ri2(x),i=>f(i.amt)),r2(x.total!=null?x.total:ri2(x).reduce((a,i)=>a+i.amt,0))])),[130,55,110,240,70,70,80]));
+ const gs=groups();
+ S.push(sh('Inventory',['Distributor','GST No','Invoice No','Date','Drugs','Batch','Expiry','Stock (units)','Cost','Customer ₹','RMP ₹','Cust %','RMP %','Status'],
+  gs.map(g=>{const st=g.items.some(i=>xs(i)=='e')?'ew':g.items.some(i=>xs(i)=='n')?'yw':'w';
+   return R([g.dist,g.gst,g.inv,g.date?dmy(g.date):'',L(g.items,(i,k)=>(k+1)+'. '+i.name),L(g.items,i=>i.batch),L(g.items,i=>i.exp),L(g.items,i=>i.qty),L(g.items,i=>i.cost?f(i.cost):'-'),L(g.items,i=>f(i.c)),L(g.items,i=>f(i.r)),L(g.items,i=>mg(i.c,i.cost)),L(g.items,i=>mg(i.r,i.cost)),L(g.items,i=>xs(i)=='e'?'EXPIRED':xs(i)=='n'?'NEAR EXPIRY':'OK')],'w',[,,,,st,st,st,,,,,,,st])}),
+  [130,110,80,75,230,80,80,75,60,75,60,70,60,100]));
+ S.push(sh('Near Expiry',['Drug','Distributor','Invoice No','Batch','Expiry','Stock (units)','Cost','Customer ₹','RMP ₹','Cust %','RMP %','Status'],
+  DB.inv.filter(i=>xs(i)).sort(byExp).map(i=>R([i.name,i.dist||'',i.invno||'',i.batch,i.exp,i.qty,i.cost||'',f(i.c),f(i.r),mg(i.c,i.cost),mg(i.r,i.cost),xs(i)=='e'?'EXPIRED':'NEAR EXPIRY (<6 months)'],xs(i)=='n'?'y':'e')),[200,130,80,80,80,75,60,75,60,70,60,150]));
+ S.push(sh('Write-offs',['Time','Drug','Batch','Distributor','Invoice','Units','Reason','Credit Note'],DB.wo.map(r=>R([r.t,r.med,r.batch,r.dist||'',r.invno||'',r.q,r.why||'',r.cn||''])),[130,200,80,130,80,50,130,90]));
+ S.push(sh('H1 Register',['Date Time','Bill','Patient','Doctor','Medicine','Batch','Units'],DB.h1.map(l=>R([l.dt,l.no,l.pt,l.doc,l.drug,l.batch,l.u])),[130,50,130,150,180,80,50]));
+ const dd={};DB.sales.forEach(b=>{const d=dd[b.date]=dd[b.date]||{c:0,t:0};d.c++;d.t+=b.total});
+ S.push(sh('Daily Summary',['Date','Bills','Revenue'],Object.keys(dd).sort().reverse().map(k=>R([dmy(k),dd[k].c,r2(dd[k].t)])),[80,50,90]));
+ const st=(id,x)=>'<Style ss:ID="'+id+'"><Alignment ss:Vertical="Top" ss:WrapText="1"/>'+(x||'')+'</Style>',fl=c=>'<Interior ss:Color="'+c+'" ss:Pattern="Solid"/>';
+ const xml='<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles>'+st('w')+st('h','<Font ss:Bold="1"/>'+fl('#D9D9D9'))+st('y',fl('#FFFF00'))+st('e',fl('#FFC7CE'))+st('yw',fl('#FFFF00'))+st('ew',fl('#FFC7CE'))+'</Styles>'+S.join('')+'</Workbook>';
+ saveOut('Excel','Pharmamitra_Data_'+today()+'.xls',xml,'application/vnd.ms-excel').then(m=>alert(m))}
+
+/* ---------- Sales graphs ---------- */
+function graph(){const p=+$('g-p').value,mo=p==365,n=mo?12:p,keys=[],lab=[];
+ for(let i=0;i<n;i++){const d=new Date();if(mo){d.setDate(1);d.setMonth(d.getMonth()-(n-1-i));const k=ds(d).slice(0,7);keys.push(k);lab.push(k.slice(5)+'/'+k.slice(2,4))}else{d.setDate(d.getDate()-(n-1-i));const k=ds(d);keys.push(k);lab.push(k.slice(8)+'-'+k.slice(5,7))}}
+ const key=b=>mo?b.date.slice(0,7):b.date,list=DB.sales.filter(b=>keys.includes(key(b))),vals=keys.map(k=>list.filter(b=>key(b)==k).reduce((a,b)=>a+b.total,0));
+ const tot=vals.reduce((a,b)=>a+b,0),kp=(l,v)=>'<div class="card" style="margin:0;text-align:center"><div class="muted" style="margin:0">'+l+'</div><div style="font-size:24px;font-weight:800;color:var(--ac)">'+v+'</div></div>';
+ $('g-kpi').innerHTML=kp('Revenue','₹'+f(tot))+kp('Bills',list.length)+kp('Average bill','₹'+f(list.length?tot/list.length:0));
+ if(!list.length){$('g-bar').innerHTML='<p class="muted">No sales in this period yet.</p>';$('g-top').innerHTML=$('g-mode').innerHTML='';return}
+ const W=700,Hh=200,bw=W/n,mxv=Math.max(1,...vals);
+ $('g-bar').innerHTML='<svg viewBox="0 0 700 250" style="width:100%">'+vals.map((v,i)=>{const h=v/mxv*Hh,x=i*bw+bw*.15,c=x+bw*.35;
+  return'<rect x="'+x+'" y="'+(Hh-h+20)+'" width="'+bw*.7+'" height="'+h+'" fill="var(--ac)" rx="3"><title>'+lab[i]+': ₹'+f(v)+'</title></rect>'+(n<=14&&v?'<text x="'+c+'" y="'+(Hh-h+14)+'" font-size="10" text-anchor="middle" fill="#475569">'+Math.round(v)+'</text>':'')+(n<=14||i%5==0?'<text x="'+c+'" y="238" font-size="10" text-anchor="middle" fill="#475569">'+lab[i]+'</text>':'')}).join('')+'</svg>';
+ const bars=(o,fmt)=>{const m=Math.max(1,...o.map(x=>x[1]));return o.map(x=>'<div style="display:flex;align-items:center;gap:8px;margin:5px 0;font-size:14px"><span style="width:38%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(x[0])+'</span><div style="flex:1;background:var(--z);border-radius:4px"><div style="height:16px;border-radius:4px;background:'+(x[2]||'var(--ac)')+';width:'+x[1]/m*100+'%"></div></div><b>'+fmt(x[1])+'</b></div>').join('')};
+ const t={};list.forEach(b=>b.rows.forEach(r=>t[r.n]=(t[r.n]||0)+r.p*r.q));
+ $('g-top').innerHTML=bars(Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,6),v=>'₹'+Math.round(v));
+ const cu=list.filter(b=>b.mode!='r').reduce((a,b)=>a+b.total,0);
+ $('g-mode').innerHTML=bars([['Customer',cu,'#0284c7'],['RMP',tot-cu,'#ea580c']],v=>'₹'+Math.round(v));}
+/* ---------- Google Drive sync (private hidden app folder, scope drive.appdata) ---------- */
+const GOOGLE_CLIENT_ID='';/* optional: paste your Client ID here once instead of in Settings */
+const GS_SCOPE='https://www.googleapis.com/auth/drive.appdata',GS_FILE='pharmamitra_data.json',API='https://www.googleapis.com/';
+let gsTok=null,gsExp=0,gsBusy=false,gsT=null,gsLast=0;
+const gsCid=()=>localStorage.getItem('PH_CID')||GOOGLE_CLIENT_ID;
+const gsMeta=()=>{try{return JSON.parse(localStorage.getItem('PH_GS'))||{}}catch(e){return{}}};
+const gsSet=o=>localStorage.setItem('PH_GS',JSON.stringify(Object.assign(gsMeta(),o)));
+const gsLive=()=>gsTok&&Date.now()<gsExp-60000;
+function gsUI(msg,col){const el=$('gs'),b=$('gsb'),m=gsMeta();if(!el)return;
+ el.textContent=msg||(m.on?(gsLive()?'☁ Google Drive: connected':'☁ Google Drive: reconnect needed'):'');
+ el.style.color=col||(m.on&&gsLive()?'#16a34a':'#ea580c');
+ b.textContent=m.on?(gsLive()?'☁ Sync now':'☁ Reconnect Google'):'☁ Connect Google'}
+function gsLoad(){return new Promise((ok,no)=>{if(window.google&&google.accounts&&google.accounts.oauth2)return ok();
+ const x=document.createElement('script');x.src='https://accounts.google.com/gsi/client';x.onload=ok;x.onerror=()=>no(new Error('Cannot reach Google. Check the internet connection.'));document.head.appendChild(x)})}
+async function gsToken(interactive){if(gsLive())return gsTok;
+ let cid=gsCid();
+ if(!cid){if(!interactive)throw new Error('No Client ID');cid=(prompt('Paste your Google Client ID (ends with .apps.googleusercontent.com):')||'').trim();if(!cid)throw new Error('Cancelled');localStorage.setItem('PH_CID',cid);$('st-cid').value=cid}
+ if(!location.protocol.startsWith('http'))throw new Error('Google sign-in works only when the app is opened from its https:// web address (GitHub Pages), not from a file on the computer.');
+ await gsLoad();
+ return new Promise((ok,no)=>{const tc=google.accounts.oauth2.initTokenClient({client_id:cid,scope:GS_SCOPE,
+  callback:r=>{if(r.error)return no(new Error(r.error_description||r.error));gsTok=r.access_token;gsExp=Date.now()+(r.expires_in||3600)*1000;ok(gsTok)},
+  error_callback:e=>no(new Error((e&&e.type)||'Sign-in window was blocked or closed'))});
+  tc.requestAccessToken({prompt:interactive&&!gsMeta().on?'select_account':''})})}
+async function gsApi(url,opt){const t=await gsToken(false);opt=opt||{};opt.headers=Object.assign({Authorization:'Bearer '+t},opt.headers||{});
+ const r=await fetch(url,opt);if(r.status==401){gsTok=null;throw new Error('Session expired')}if(!r.ok)throw new Error('Google Drive error '+r.status);return r}
+async function gsFind(){const r=await gsApi(API+'drive/v3/files?spaces=appDataFolder&fields=files(id,modifiedTime)&q='+encodeURIComponent("name='"+GS_FILE+"'"));const j=await r.json();return(j.files&&j.files[0])||null}
+async function gsUpload(f){const body=snap();let r;
+ if(f)r=await gsApi(API+'upload/drive/v3/files/'+f.id+'?uploadType=media&fields=id,modifiedTime',{method:'PATCH',headers:{'Content-Type':'application/json'},body});
+ else{const bd='ph'+Date.now(),mp='--'+bd+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+JSON.stringify({name:GS_FILE,parents:['appDataFolder']})+'\r\n--'+bd+'\r\nContent-Type: application/json\r\n\r\n'+body+'\r\n--'+bd+'--';
+  r=await gsApi(API+'upload/drive/v3/files?uploadType=multipart&fields=id,modifiedTime',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+bd},body:mp})}
+ return r.json()}
+async function gsApply(f){const r=await gsApi(API+'drive/v3/files/'+f.id+'?alt=media'),txt=await r.text();
+ if(!applyBackup(txt,true))return false;gsSet({on:1,mod:f.modifiedTime});alert('Restored from Google Drive. Please log in.');init();gsUI();return true}
+function gsQ(){if(!gsMeta().on)return;clearTimeout(gsT);gsT=setTimeout(()=>gsPush(false),4000)}
+async function gsPush(manual){if(gsBusy||!gsMeta().on)return;gsBusy=true;let take=null;
+ try{gsUI('☁ Syncing…','#ea580c');const f=await gsFind(),m=gsMeta();
+  if(f&&f.modifiedTime!=m.mod){
+   const when=new Date(f.modifiedTime).toLocaleString();
+   if(confirm('Google Drive already has a pharmacy backup saved '+when+(m.mod?' (changed from another device)':'')+'.\n\nOK = load THAT backup onto this device (this device\'s data is replaced)\nCancel = keep this device and replace the Drive copy'))take=f}
+  if(!take){const u=await gsUpload(f);gsSet({mod:u.modifiedTime,fid:u.id});markBk();gsUI('☁ Saved to Google Drive '+new Date().toLocaleTimeString(),'#16a34a')}}
+ catch(e){gsUI('☁ Not synced: '+e.message,'#dc2626')}
+ finally{gsBusy=false}
+ if(take)await gsApply(take)}
+async function gsClick(){const m=gsMeta();
+ try{await gsToken(true)}catch(e){gsUI('☁ '+e.message,'#dc2626');alert('Google sign-in failed: '+e.message);return}
+ gsSet({on:1});gsUI();gsPush(true)}
+async function gsRestoreNew(){try{await gsToken(true);gsSet({on:1,mod:null});const f=await gsFind();
+ if(!f){alert('No pharmacy backup was found in this Google account. Sign in with the same Google account you used on the main computer.');return}
+ await gsApply(f)}catch(e){alert('Could not restore: '+e.message)}}
+function gsSaveCid(){const v=$('st-cid').value.trim();if(v)localStorage.setItem('PH_CID',v);else localStorage.removeItem('PH_CID');gsTok=null;gsUI();alert('Client ID saved. Now press "Connect Google" at the top.')}
+function gsOff(){if(!confirm('Stop syncing with Google Drive on this device? Data already on Drive stays there.'))return;
+ try{if(gsTok&&window.google)google.accounts.oauth2.revoke(gsTok,()=>{})}catch(e){}
+ gsTok=null;localStorage.removeItem('PH_GS');gsUI();alert('Google sync is off on this device.')}
+/* tokens last 1 hour: renew quietly on the next click when changes are waiting */
+document.addEventListener('click',()=>{if(me&&gsMeta().on&&!gsLive()&&DB.bk.n>0&&Date.now()-gsLast>600000){gsLast=Date.now();gsToken(false).then(()=>{gsUI();gsPush(false)}).catch(()=>gsUI())}});
+
+/* ---------- installable app ---------- */
+let instEv=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();instEv=e;$('ib').classList.remove('hidden')});
+window.addEventListener('appinstalled',()=>{instEv=null;$('ib').classList.add('hidden')});
+function doInstall(){if(instEv){instEv.prompt();instEv=null;$('ib').classList.add('hidden')}}
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+init();
+</script></body></html>
